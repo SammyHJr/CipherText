@@ -38,25 +38,76 @@ def launch_gui(text: str = "", shift: int = 3, decrypt_mode: bool = False) -> No
     root = tk.Tk()
     root.title("CipherText")        # Name of the program
     root.geometry("500x420")        # Set a fixed window size
+    root.configure(bg="#ffffff")  # Set a light background color for better aesthetics
     root.resizable(False, False)      # Enable resizing to maintain layout integrity
 
-    tk.Label(root, text="Enter text:").pack(anchor="w", padx=10, pady=(10, 0))  # Label for the input text area
-    input_text = tk.Text(root, height=8, wrap="word")                           # Text area for user input, with word wrapping and a specified height
+    tk.Label(
+        root, 
+        text="Enter text:",
+        background="#ffffff"
+    ).pack(anchor="w", padx=10, pady=(10, 0))  # Label for the input text area
+    
+    input_text = tk.Text(
+        root,
+        height=8,
+        wrap="word",
+        bd=2,
+        relief="solid",
+        bg="#ffffff",
+        highlightthickness=1,
+        highlightbackground="#cccccc",
+        insertbackground="black",
+    )                           # Text area for user input, with word wrapping and a specified height
     input_text.pack(fill="both", padx=10, pady=(0, 10))                         # Pack the input text area to fill the available space with padding
     input_text.insert("1.0", text)                                              # Prefill the input text area with the provided text argument
 
-    options_frame = tk.Frame(root)
+    options_frame = tk.Frame(root, bg="#ffffff")
     options_frame.pack(fill="x", padx=10)
 
     shift_var = tk.IntVar(value=shift)
     decrypt_var = tk.BooleanVar(value=decrypt_mode)
 
-    tk.Label(options_frame, text="Shift:").grid(row=0, column=0, sticky="w")
-    tk.Spinbox(options_frame, from_=-25, to=25, textvariable=shift_var, width=5).grid(row=0, column=1, sticky="w", padx=(5, 20))
-    tk.Checkbutton(options_frame, text="Decrypt", variable=decrypt_var).grid(row=0, column=2, sticky="w")
+    tk.Label(
+        options_frame,
+        text="Shift:",
+        bg="#ffffff",
+    ).grid(row=0, column=0, sticky="w")
+    
+    tk.Spinbox(
+        options_frame,
+        from_=-25,
+        to=25,
+        textvariable=shift_var,
+        width=5,
+        bg="#ffffff",
+        fg="black",
+        insertbackground="black",
+        relief="solid",
+        bd=1,
+    ).grid(row=0, column=1, sticky="w", padx=(5, 20))  # Spinbox for selecting the shift value, allowing values from -25 to 25
+    tk.Checkbutton(
+        options_frame,
+        text="Decrypt",
+        variable=decrypt_var,
+        bg="#ffffff",
+        activebackground="#ffffff",
+        selectcolor="#ffffff",
+    ).grid(row=0, column=2, sticky="w")
 
-    tk.Label(root, text="Result:").pack(anchor="w", padx=10, pady=(10, 0))
-    output_text = tk.Text(root, height=8, wrap="word", state="disabled")
+    tk.Label(root, text="Result:", bg="#ffffff").pack(anchor="w", padx=10, pady=(10, 0))
+    output_text = tk.Text(
+        root,
+        height=8,
+        wrap="word",
+        state="disabled",
+        bd=2,
+        relief="solid",
+        bg="#ffffff",
+        highlightthickness=1,
+        highlightbackground="#cccccc",
+        fg="black",
+        insertbackground="black",
+    )                          # Text area for displaying the output result, set to disabled to
     output_text.pack(fill="both", padx=10, pady=(0, 10))
 
     def process_text() -> None:
@@ -81,7 +132,7 @@ def launch_gui(text: str = "", shift: int = 3, decrypt_mode: bool = False) -> No
         output_text.insert("1.0", result)
         output_text.config(state="disabled")
 
-    button_frame = tk.Frame(root)
+    button_frame = tk.Frame(root, bg="#ffffff")
     button_frame.pack(fill="x", padx=10, pady=(0, 10))
 
     tk.Button(
