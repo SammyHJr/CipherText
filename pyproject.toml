@@ -1,0 +1,19 @@
+[project]
+name = "ciphertext"
+version = "0.1.0"
+description = "A simple cipher app that encrypts and decrypts text."
+authors = [
+    { name = "Your Name" }
+]
+readme = "README.md"
+requires-python = ">=3.10"
+scripts = {
+    ciphertext = "ciphertext.__main__:main"
+}
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
