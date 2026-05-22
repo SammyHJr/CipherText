@@ -27,23 +27,23 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def launch_gui(text: str = "", shift: int = 3, decrypt_mode: bool = False) -> None:
+def launch_gui(text: str = "", shift: int = 3, decrypt_mode: bool = False) -> None: ##launch the gui
     try:
-        import tkinter as tk
-        from tkinter import messagebox
+        import tkinter as tk    # Importing tkinter for GUI functionality, with a fallback to CLI if it's not available
+        from tkinter import messagebox  # Importing messagebox for displaying informational and error messages in the GUI
     except ImportError:
         print("Tkinter is not available. Falling back to command-line mode.")
         return run_cli(text, shift, decrypt_mode)
 
     root = tk.Tk()
-    root.title("CipherText")
-    root.geometry("500x420")
-    root.resizable(False, False)
+    root.title("CipherText")        # Name of the program
+    root.geometry("500x420")        # Set a fixed window size
+    root.resizable(False, False)      # Enable resizing to maintain layout integrity
 
-    tk.Label(root, text="Enter text:").pack(anchor="w", padx=10, pady=(10, 0))
-    input_text = tk.Text(root, height=8, wrap="word")
-    input_text.pack(fill="both", padx=10, pady=(0, 10))
-    input_text.insert("1.0", text)
+    tk.Label(root, text="Enter text:").pack(anchor="w", padx=10, pady=(10, 0))  # Label for the input text area
+    input_text = tk.Text(root, height=8, wrap="word")                           # Text area for user input, with word wrapping and a specified height
+    input_text.pack(fill="both", padx=10, pady=(0, 10))                         # Pack the input text area to fill the available space with padding
+    input_text.insert("1.0", text)                                              # Prefill the input text area with the provided text argument
 
     options_frame = tk.Frame(root)
     options_frame.pack(fill="x", padx=10)
@@ -84,9 +84,51 @@ def launch_gui(text: str = "", shift: int = 3, decrypt_mode: bool = False) -> No
     button_frame = tk.Frame(root)
     button_frame.pack(fill="x", padx=10, pady=(0, 10))
 
-    tk.Button(button_frame, text="Run", command=process_text).pack(side="left")
-    tk.Button(button_frame, text="Clear", command=lambda: input_text.delete("1.0", "end")).pack(side="left", padx=10)
-    tk.Button(button_frame, text="Quit", command=root.destroy).pack(side="right")
+    tk.Button(
+        button_frame,
+        text="Run",
+        command=process_text,
+        bg="#000000",
+        fg="white",
+        activebackground="#313131",
+        activeforeground="black",
+        bd=0,
+        relief="flat",
+        padx=12,
+        pady=6,
+        cursor="hand2",
+        font=("Segoe UI", 10, "bold"),
+    ).pack(side="left")
+    tk.Button(
+        button_frame, 
+        text="Clear", 
+        command=lambda: input_text.delete("1.0", "end"),
+        bg="#000000",
+        fg="white",
+        activebackground="#313131",
+        activeforeground="black",
+        bd = 0,
+        relief="raised",
+        padx=12,
+        pady=6,
+        cursor="hand2",
+        font=("Segoe UI", 10, "bold"),
+    ).pack(side="left", padx=10)
+    tk.Button(
+        button_frame, 
+        text="Quit", 
+        command=root.destroy,
+        bg="#000000",
+        fg="white",
+        activebackground="#313131",
+        activeforeground="black",
+        bd = 0,
+        relief="ridge",
+        padx=12,
+        pady=6,
+        cursor="hand2",
+        font=("Segoe UI", 10, "bold"),
+    ).pack(side="right")
 
     root.mainloop()
 
