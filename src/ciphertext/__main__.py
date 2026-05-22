@@ -37,7 +37,7 @@ def launch_gui(text: str = "", shift: int = 3, decrypt_mode: bool = False) -> No
 
     root = tk.Tk()
     root.title("CipherText")        # Name of the program
-    root.geometry("800x800")        # Set a fixed window size
+    root.geometry("800x500")        # Set a fixed window size
     root.configure(bg="#ffffff")  # Set a light background color for better aesthetics
     root.resizable(False, False)      # Enable resizing to maintain layout integrity
 
