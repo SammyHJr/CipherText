@@ -37,7 +37,7 @@ def launch_gui(text: str = "", shift: int = 3, decrypt_mode: bool = False) -> No
 
     root = tk.Tk()
     root.title("CipherText")        # Name of the program
-    root.geometry("500x420")        # Set a fixed window size
+    root.geometry("800x800")        # Set a fixed window size
     root.configure(bg="#ffffff")  # Set a light background color for better aesthetics
     root.resizable(False, False)      # Enable resizing to maintain layout integrity
 
@@ -47,7 +47,7 @@ def launch_gui(text: str = "", shift: int = 3, decrypt_mode: bool = False) -> No
         background="#ffffff"
     ).pack(anchor="w", padx=10, pady=(10, 0))  # Label for the input text area
     
-    input_text = tk.Text(
+    input_text = tk.Text(   # this is the text area where the user will input the text to be encrypted or decrypted
         root,
         height=8,
         wrap="word",
@@ -57,7 +57,7 @@ def launch_gui(text: str = "", shift: int = 3, decrypt_mode: bool = False) -> No
         highlightthickness=1,
         highlightbackground="#cccccc",
         insertbackground="black",
-    )                           # Text area for user input, with word wrapping and a specified height
+    )                          
     input_text.pack(fill="both", padx=10, pady=(0, 10))                         # Pack the input text area to fill the available space with padding
     input_text.insert("1.0", text)                                              # Prefill the input text area with the provided text argument
 
@@ -66,6 +66,7 @@ def launch_gui(text: str = "", shift: int = 3, decrypt_mode: bool = False) -> No
 
     shift_var = tk.IntVar(value=shift)
     decrypt_var = tk.BooleanVar(value=decrypt_mode)
+    substitution_key_var = tk.StringVar(value="QWERTYUIOPASDFGHJKLZXCVBNM")
 
     tk.Label(
         options_frame,
@@ -93,6 +94,22 @@ def launch_gui(text: str = "", shift: int = 3, decrypt_mode: bool = False) -> No
         activebackground="#ffffff",
         selectcolor="#ffffff",
     ).grid(row=0, column=2, sticky="w")
+
+    tk.Label(
+        options_frame,
+        text="Key:",
+        bg="#ffffff",
+    ).grid(row=1, column=0, sticky="w", pady=(8, 0))
+    tk.Entry(
+        options_frame,
+        textvariable=substitution_key_var,
+        width=30,
+        bg="#ffffff",
+        fg="black",
+        insertbackground="black",
+        relief="solid",
+        bd=1,
+    ).grid(row=1, column=1, columnspan=2, sticky="w", padx=(5, 0), pady=(8, 0))
 
     tk.Label(root, text="Result:", bg="#ffffff").pack(anchor="w", padx=10, pady=(10, 0))
     output_text = tk.Text(
@@ -132,6 +149,45 @@ def launch_gui(text: str = "", shift: int = 3, decrypt_mode: bool = False) -> No
         output_text.insert("1.0", result)
         output_text.config(state="disabled")
 
+    def process_substitution() -> None:
+        input_value = input_text.get("1.0", "end-1c")
+        if not input_value.strip():
+            messagebox.showinfo("CipherText", "Please enter text to process.")
+            return
+
+        if decrypt_var.get():
+            result = decrypt(input_value, cipher="substitution")
+        else:
+            result = encrypt(input_value, cipher="substitution")
+
+        output_text.config(state="normal")
+        output_text.delete("1.0", "end")
+        output_text.insert("1.0", result)
+        output_text.config(state="disabled")
+    def process_substitution() -> None:
+        input_value = input_text.get("1.0", "end-1c")
+        if not input_value.strip():
+            messagebox.showinfo("CipherText", "Please enter text to process.")
+            return
+
+        current_key = substitution_key_var.get().strip()
+        if not current_key:
+            messagebox.showerror("CipherText", "Please enter a substitution key.")
+            return
+
+        try:
+            if decrypt_var.get():
+                result = decrypt(input_value, cipher="substitution", key=current_key)
+            else:
+                result = encrypt(input_value, cipher="substitution", key=current_key)
+        except ValueError as exc:
+            messagebox.showerror("CipherText", str(exc))
+            return
+
+        output_text.config(state="normal")
+        output_text.delete("1.0", "end")
+        output_text.insert("1.0", result)
+        output_text.config(state="disabled")
     button_frame = tk.Frame(root, bg="#ffffff")
     button_frame.pack(fill="x", padx=10, pady=(0, 10))
 
@@ -158,8 +214,23 @@ def launch_gui(text: str = "", shift: int = 3, decrypt_mode: bool = False) -> No
         fg="white",
         activebackground="#313131",
         activeforeground="black",
-        bd = 0,
+        bd=0,
         relief="raised",
+        padx=12,
+        pady=6,
+        cursor="hand2",
+        font=("Segoe UI", 10, "bold"),
+    ).pack(side="left", padx=10)
+    tk.Button(
+        button_frame,
+        text="Substitution",
+        command=process_substitution,
+        bg="#000000",
+        fg="white",
+        activebackground="#313131",
+        activeforeground="black",
+        bd=0,
+        relief="flat",
         padx=12,
         pady=6,
         cursor="hand2",
