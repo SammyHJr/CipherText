@@ -26,7 +26,7 @@ def caesar_decrypt(text: str, shift: int = 3) -> str:
     return caesar_encrypt(text, -shift)
 
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-SUBSTITUTION_KEY = "QWERTYUIOPASDFGHJKLZXCVBNM"
+SUBSTITUTION_KEY = ""
 
 
 def _normalize_key(key: str) -> str:
